@@ -1,0 +1,1394 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   KELOLA ERP (DEMO) — MOBILE STYLES
+   Responsive Breakpoints · Touch-Optimized · Safe Area Support
+   Extracted & enhanced from style.css for separation of concerns
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── MOBILE TOKEN OVERRIDES ──────────────────────────────────────────────────── */
+/* These tokens adjust for mobile constraints: smaller touch areas, reduced
+   spacing, and optimized layout dimensions for small screens. */
+
+@media (max-width: 768px) {
+  :root {
+    --topbar-h: 56px;
+    --sp-8: 24px;
+    --sp-6: 20px;
+    --sp-5: 16px;
+    --sp-4: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --topbar-h: 52px;
+    --sp-8: 20px;
+    --sp-6: 16px;
+  }
+}
+
+/* ── XL BREAKPOINT (≤1200px) — Tablet landscape ──────────────────────────────── */
+@media (max-width: 1200px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stat-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .finance-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dash-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── LARGE BREAKPOINT (≤900px) — Tablet portrait ─────────────────────────────── */
+@media (max-width: 900px) {
+  .chart-2col {
+    grid-template-columns: 1fr;
+  }
+  .dash-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .dash-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Flyout panel adapts to available space */
+  .flyout-panel {
+    left: var(--sidebar-w);
+    width: calc(100vw - var(--sidebar-w));
+    max-width: 340px;
+  }
+
+  /* Modal gets slightly smaller on tablets */
+  .modal {
+    max-width: 500px;
+  }
+  .modal.wide {
+    max-width: 700px;
+  }
+}
+
+/* ── MEDIUM BREAKPOINT (≤768px) — Mobile landscape / large phone ─────────────── */
+@media (max-width: 768px) {
+  /* ── Body resets ────────────────────────────────────────────────────────────── */
+  body {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ── Sidebar becomes an overlay drawer (hamburger menu) ──────────────────────── */
+  /* Slide via transform (GPU) rather than `left`. The `left`-based transition
+     was getting stuck at currentTime 0 because view-transitions.js sets an
+     inline `view-transition-name: sidebar` on this element, which under the
+     existing `transform: translateZ(0)` layer-promotion rule from style.css
+     prevented the left transition from advancing. Result: hamburger toggled
+     `.open` but the drawer visually stayed at -280px and the user only saw
+     Dashboard with no way to access other menus. */
+  .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    min-width: 280px;
+    transform: translate3d(-100%, 0, 0) !important;
+    box-shadow: none;
+    visibility: hidden;
+    /* IMPORTANT: do NOT transition `transform` on this element.
+       view-transitions.js sets an inline `view-transition-name: sidebar`
+       and style.css promotes it to its own compositor layer (translateZ(0)).
+       On mobile this left the transform transition stuck at currentTime 0 —
+       the drawer toggled `.open` but never advanced off -100%, so tapping the
+       hamburger only showed the backdrop with no visible menu. We opt the
+       drawer out of view transitions and apply the slide position instantly
+       (animating box-shadow/visibility only) so the menu always appears. */
+    view-transition-name: none !important;
+    transition:
+      box-shadow 0.28s cubic-bezier(0.32, 0.72, 0, 1),
+      visibility 0s linear 0.28s;
+    z-index: 300;
+    /* Safe area inset for notched phones when sidebar is open */
+    padding-top: env(safe-area-inset-top, 0);
+  }
+  .sidebar.open {
+    transform: translate3d(0, 0, 0) !important;
+    visibility: visible;
+    box-shadow:
+      4px 0 24px rgba(0, 0, 0, 0.5),
+      12px 0 48px rgba(0, 0, 0, 0.3);
+    transition:
+      box-shadow 0.28s cubic-bezier(0.32, 0.72, 0, 1),
+      visibility 0s linear 0s;
+  }
+
+  /* ── Sidebar backdrop (dark overlay behind drawer) ──────────────────────────── */
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0);
+    pointer-events: none;
+    transition:
+      background 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+      backdrop-filter 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .sidebar-backdrop.open {
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  /* ── Main content takes full width ──────────────────────────────────────────── */
+  .main {
+    margin-left: 0 !important;
+    width: 100vw !important;
+  }
+
+  /* ── Hamburger button visible with animated icon ────────────────────────────── */
+  .hamburger {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: var(--text);
+    transition: all var(--dur) var(--ease);
+    position: relative;
+    z-index: 10;
+  }
+  .hamburger:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+  }
+  .hamburger:active {
+    transform: scale(0.92);
+  }
+  /* Animate hamburger lines to X when open */
+  .hamburger svg line {
+    transition:
+      transform 0.25s cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 0.15s ease;
+    transform-origin: center;
+  }
+  .hamburger.open svg line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .hamburger.open svg line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .hamburger.open svg line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* Prevent body scroll when sidebar is open */
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  /* ── Topbar adjustments ─────────────────────────────────────────────────────── */
+  .topbar {
+    padding: 0 12px;
+    gap: 8px;
+    position: relative; /* For overflow menu positioning */
+  }
+
+  /* Search takes most of the space */
+  .search-wrap {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    width: auto;
+  }
+
+  /* Hide desktop topbar-right items on mobile */
+  .topbar-right .theme-toggle,
+  .topbar-right .notif,
+  .topbar-right .user-chip {
+    display: none;
+  }
+
+  /* Show overflow menu button on mobile */
+  .topbar-overflow {
+    display: flex;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Overflow menu as bottom sheet on mobile */
+  .topbar-overflow-menu {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    min-width: 0;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 8px;
+    animation: slideUp 0.2s var(--ease);
+    /* Safe area for home indicator */
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0));
+  }
+
+  /* ── View / content area ────────────────────────────────────────────────────── */
+  .view {
+    padding: 16px;
+  }
+  .content {
+    padding: 16px 12px 24px;
+  }
+
+  /* ── Grid adjustments ───────────────────────────────────────────────────────── */
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .stat-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .chart-2col {
+    grid-template-columns: 1fr;
+  }
+  .dash-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .dash-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Flyout panel full-screen on mobile (full-blur overlay) ─────────────────── */
+  /* Kept full-screen by request (user prefers the full-blur look over a sheet).
+     The panel covers the whole viewport so .flyout-backdrop isn't reachable;
+     instead ui/nav.js closes the flyout when an empty area of the panel (i.e.
+     not a .flyout-item button) is tapped — "tap outside a button = back".
+     z-index must exceed sidebar (300) and sidebar-backdrop (250) so the flyout
+     isn't buried under the sidebar overlay while it fades out. */
+  .flyout-panel {
+    left: 0;
+    width: 100vw;
+    max-width: 100vw;
+    padding: 16px;
+    z-index: 320;
+    /* Full-screen overlay must fully obscure the dashboard behind it,
+       independent of backdrop-filter support. */
+    background: rgba(4, 7, 17, 0.92);
+    backdrop-filter: blur(40px) saturate(140%);
+    -webkit-backdrop-filter: blur(40px) saturate(140%);
+  }
+  [data-theme='light'] .flyout-panel {
+    background: rgba(255, 255, 255, 0.94);
+  }
+
+  .flyout-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  /* ── Modal becomes bottom sheet ─────────────────────────────────────────────── */
+  .modal {
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    margin-top: auto;
+    align-self: flex-end;
+    max-height: 88vh;
+    max-width: 100%;
+    width: 100%;
+    /* Safe area for home indicator */
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .modal-backdrop,
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  /* Modal handle indicator (visual affordance for bottom sheet) */
+  .modal::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--muted-light);
+    margin: 8px auto 4px;
+    opacity: 0.5;
+  }
+
+  /* ── Section headers stack vertically ───────────────────────────────────────── */
+  .sec-hdr {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .sec-title {
+    font-size: 18px;
+  }
+
+  /* ── Dashboard header ───────────────────────────────────────────────────────── */
+  .dash-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .dash-title {
+    font-size: 22px;
+  }
+
+  /* ── Toast repositioned for mobile ──────────────────────────────────────────── */
+  .toast-wrap,
+  .toast-container {
+    bottom: 16px;
+    right: 12px;
+    left: 12px;
+    max-width: none;
+  }
+  .toast {
+    max-width: none;
+    width: 100%;
+  }
+
+  /* ── Notification panel ─────────────────────────────────────────────────────── */
+  .notif-panel {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    max-height: 70vh;
+    overflow-y: auto;
+    animation: slideUp 0.2s var(--ease);
+    /* Safe area for home indicator */
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  /* ── Table controls stack ───────────────────────────────────────────────────── */
+  .tbl-controls {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* ── Filter dropdown full-width ─────────────────────────────────────────────── */
+  .filter-drop {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 0;
+    top: auto;
+    width: auto;
+    min-width: 0;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    animation: slideUp 0.2s var(--ease);
+    /* Safe area for home indicator */
+    padding-bottom: calc(6px + env(safe-area-inset-bottom, 0));
+  }
+
+  /* ── Bulk action bar ────────────────────────────────────────────────────────── */
+  .bulk-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  /* ── Empty state compact ────────────────────────────────────────────────────── */
+  .empty-state {
+    padding: 32px 16px;
+  }
+
+  /* ── Pager wraps ────────────────────────────────────────────────────────────── */
+  .pager {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* ── Activity timeline ──────────────────────────────────────────────────────── */
+  .activity-date-big {
+    font-size: 32px;
+  }
+
+  /* ── Print doc ──────────────────────────────────────────────────────────────── */
+  .print-doc {
+    padding: 16px;
+  }
+
+  /* ── Donut chart stacks vertically on mobile ────────────────────────────────── */
+  .donut-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ── SMALL BREAKPOINT (≤480px) — Mobile portrait ─────────────────────────────── */
+@media (max-width: 480px) {
+  /* ── KPI cards compact ──────────────────────────────────────────────────────── */
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .kpi-val {
+    font-size: 22px;
+  }
+  .kpi-card {
+    padding: 14px 16px;
+  }
+  .kpi-label {
+    font-size: 10px;
+  }
+  .kpi-ico {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* ── Stat row ───────────────────────────────────────────────────────────────── */
+  .stat-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat-value {
+    font-size: 18px;
+  }
+
+  /* ── Finance KPI grid stacks ────────────────────────────────────────────────── */
+  .finance-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── View / content area further reduced padding ────────────────────────────── */
+  .view {
+    padding: 12px;
+  }
+  .content {
+    padding: 12px 8px 20px;
+  }
+
+  /* ── Topbar minimal ─────────────────────────────────────────────────────────── */
+  .topbar {
+    padding: 0 8px;
+    gap: 6px;
+  }
+  .search-wrap {
+    height: 34px;
+    padding: 0 12px 0 14px;
+  }
+  .search-input {
+    font-size: 12px;
+  }
+
+  /* ── Section titles smaller ─────────────────────────────────────────────────── */
+  .sec-title {
+    font-size: 16px;
+  }
+  .dash-title {
+    font-size: 20px;
+  }
+
+  /* ── Denser tables ──────────────────────────────────────────────────────────── */
+  table {
+    font-size: 12px;
+  }
+  thead th {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+  td {
+    padding: 9px 10px;
+  }
+
+  /* ── Card compact ───────────────────────────────────────────────────────────── */
+  .card {
+    padding: 14px 16px;
+    border-radius: var(--r-lg);
+  }
+
+  /* ── Widget card compact ────────────────────────────────────────────────────── */
+  .widget-card {
+    padding: 14px 16px;
+    border-radius: var(--r-lg);
+  }
+
+  /* ── Modal full-height on very small screens ────────────────────────────────── */
+  .modal {
+    max-height: 92vh;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+  }
+  .modal-body {
+    padding: 16px;
+  }
+  .modal-hdr,
+  .modal-header {
+    padding: 14px 16px;
+  }
+  .modal-footer {
+    padding: 12px 16px;
+    /* Safe area for home indicator */
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0));
+  }
+
+  /* ── Buttons touch-friendly (min 44px tap target) ───────────────────────────── */
+  .btn,
+  .btn-primary,
+  .btn-ghost,
+  .btn-danger {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .filter-btn {
+    min-height: 40px;
+    padding: 8px 12px;
+  }
+
+  /* ── Form inputs touch-friendly ─────────────────────────────────────────────── */
+  .form-input,
+  input[type='text'],
+  input[type='number'],
+  input[type='date'],
+  input[type='email'],
+  input[type='tel'],
+  input[type='search'],
+  select,
+  textarea {
+    min-height: 44px;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+    padding: 10px 14px;
+  }
+
+  /* ── Rail items touch-friendly ──────────────────────────────────────────────── */
+  .rail-item {
+    min-height: 44px;
+    padding: 11px 10px;
+  }
+
+  /* ── Flyout grid 2 columns on very small screens ───────────────────────────── */
+  .flyout-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* ── Flyout item touch-friendly ─────────────────────────────────────────────── */
+  .flyout-item {
+    padding: 14px 10px;
+    min-height: 44px;
+  }
+
+  /* ── Topbar buttons touch-friendly ──────────────────────────────────────────── */
+  .theme-toggle,
+  .notif {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hamburger {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* ── Dash tabs: wrap tab buttons in row 1, push right-tools to row 2 ─────────── */
+  .dash-tabs {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 0;
+    row-gap: 8px;
+  }
+
+  .dash-tab {
+    padding: 10px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Force "+ Widget" + layout select to their own row, full width, right-aligned.
+     Prevents the tab "+ Widget" being clipped at the viewport edge. */
+  .dash-tab-right {
+    margin-left: 0;
+    flex-basis: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 2px;
+  }
+  .widget-add-btn,
+  .dash-select {
+    flex-shrink: 0;
+  }
+
+  /* ── Summary values compact ─────────────────────────────────────────────────── */
+  .summary-value {
+    font-size: 18px;
+  }
+
+  /* ── Settings grid single column ────────────────────────────────────────────── */
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Progress legend wraps tighter ──────────────────────────────────────────── */
+  .progress-legend {
+    gap: 4px 10px;
+  }
+
+  /* ── Pager more compact ─────────────────────────────────────────────────────── */
+  .pager {
+    font-size: 11px;
+    gap: 4px;
+  }
+}
+
+/* ── EXTRA SMALL BREAKPOINT (≤360px) — Very small phones ─────────────────────── */
+@media (max-width: 360px) {
+  :root {
+    --topbar-h: 48px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .stat-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .topbar {
+    padding: 0 6px;
+    gap: 4px;
+  }
+
+  .search-wrap {
+    min-width: 0;
+  }
+
+  .view {
+    padding: 10px;
+  }
+  .content {
+    padding: 10px 6px 16px;
+  }
+
+  .dash-title {
+    font-size: 18px;
+  }
+
+  .sec-title {
+    font-size: 15px;
+  }
+
+  .kpi-val {
+    font-size: 20px;
+  }
+
+  /* Flyout single column on tiny screens */
+  .flyout-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Make modal even more full-screen on tiny devices */
+  .modal {
+    max-height: 95vh;
+    border-radius: var(--r) var(--r) 0 0;
+  }
+
+  .widget-card {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+}
+
+/* ── LANDSCAPE MODE ADJUSTMENTS (≤768px and landscape) ───────────────────────── */
+@media (max-width: 768px) and (orientation: landscape) {
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    left: -240px;
+  }
+  .sidebar.open {
+    left: 0 !important;
+  }
+
+  .modal {
+    max-height: 95vh;
+    align-self: center;
+    border-radius: var(--r-xl);
+    max-width: 560px;
+  }
+  .modal-backdrop,
+  .modal-overlay {
+    padding: 12px;
+    align-items: center;
+  }
+
+  /* Remove bottom sheet handle in landscape */
+  .modal::before {
+    display: none;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .stat-row {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .kpi-card {
+    padding: 12px;
+  }
+
+  .kpi-val {
+    font-size: 20px;
+  }
+}
+
+/* ── SAFE AREA INSET SUPPORT (notched phones) ────────────────────────────────── */
+@supports (padding: env(safe-area-inset-top)) {
+  @media (max-width: 768px) {
+    .topbar {
+      padding-top: env(safe-area-inset-top, 0);
+      height: calc(var(--topbar-h) + env(safe-area-inset-top, 0));
+    }
+
+    .sidebar {
+      padding-top: env(safe-area-inset-top, 0);
+    }
+
+    /* Flyout overlays the whole screen (top:0, z-index:320). Without the inset
+       its header ("General Ledger" etc.) renders under the status bar / notch on
+       notched iPhones in Safari (viewport-fit=cover + black-translucent bar),
+       clipping the title. Keep the base 16px padding and add the inset on top. */
+    .flyout-panel {
+      padding-top: calc(16px + env(safe-area-inset-top, 0));
+    }
+
+    .content {
+      padding-bottom: calc(24px + env(safe-area-inset-bottom, 0));
+    }
+
+    .toast-wrap,
+    .toast-container {
+      bottom: calc(16px + env(safe-area-inset-bottom, 0));
+    }
+
+    .modal-footer {
+      padding-bottom: calc(14px + env(safe-area-inset-bottom, 0));
+    }
+  }
+}
+
+/* ── CONTAINER QUERIES (responsive within components) ────────────────────────── */
+@supports (container-type: inline-size) {
+  .card {
+    container-type: inline-size;
+    container-name: card;
+  }
+  @container card (max-width: 400px) {
+    .kpi-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .kpi-ico {
+      order: -1;
+    }
+  }
+  .view {
+    container-type: inline-size;
+    container-name: view;
+  }
+  @container view (max-width: 600px) {
+    .stat-row {
+      grid-template-columns: 1fr;
+    }
+    .chart-2col {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* ── TOUCH TARGET ENHANCEMENTS ───────────────────────────────────────────────── */
+/* Ensure all interactive elements meet the 44px minimum tap target on touch devices */
+@media (pointer: coarse) {
+  .rail-item {
+    min-height: 44px;
+  }
+
+  .btn,
+  .btn-primary,
+  .btn-ghost,
+  .btn-danger {
+    min-height: 44px;
+  }
+
+  .filter-btn {
+    min-height: 40px;
+  }
+
+  .theme-toggle,
+  .notif {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hamburger {
+    width: 40px;
+    height: 40px;
+  }
+
+  .close-btn,
+  .modal-close {
+    width: 36px;
+    height: 36px;
+  }
+
+  .widget-action-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-badge {
+    min-width: 20px;
+    min-height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Disable hover transforms on touch devices to prevent "sticky" hover */
+  .kpi-card:hover {
+    transform: none;
+  }
+  .card:hover {
+    transform: none;
+  }
+  .flyout-item:hover {
+    transform: none;
+  }
+  .settings-card:hover {
+    transform: none;
+  }
+
+  /* Larger checkbox/radio targets */
+  input[type='checkbox'],
+  input[type='radio'] {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Table rows with larger touch targets */
+  tbody tr {
+    cursor: pointer;
+  }
+  td {
+    padding: 12px 10px;
+  }
+}
+
+/* ── MOBILE ANIMATION OPTIMIZATIONS ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile for performance */
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Simplify entrance animations on mobile */
+  @keyframes glassIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Disable mesh drift on mobile to save GPU */
+  body::before {
+    animation: none;
+  }
+
+  /* Reduce stagger animation on mobile */
+  tbody tr {
+    animation-delay: 0s !important;
+  }
+
+  /* Faster transitions for snappier mobile feel */
+  .sidebar {
+    transition:
+      left 0.25s cubic-bezier(0.32, 0.72, 0, 1),
+      box-shadow 0.25s cubic-bezier(0.32, 0.72, 0, 1),
+      visibility 0s linear 0.25s;
+  }
+
+  .flyout-panel {
+    animation: mobileSlideIn 0.2s var(--ease);
+  }
+
+  @keyframes mobileSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ── MOBILE SCROLL IMPROVEMENTS ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Smooth scrolling with momentum */
+  .content {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Sidebar scroll improvements */
+  .sidebar-rail {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Table horizontal scroll */
+  .table-wrap,
+  .tbl-wrap {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    margin: 0 -12px; /* Extend to edges */
+    border-radius: 0;
+  }
+
+  /* Modal body scroll */
+  .modal-body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+}
+
+/* ── MOBILE TYPOGRAPHY ADJUSTMENTS ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .sec-sub {
+    font-size: 12px;
+  }
+
+  .dash-greeting {
+    font-size: 12px;
+  }
+
+  .dash-date {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .widget-title {
+    font-size: 13px;
+  }
+
+  /* Prevent text overflow on small screens */
+  .kpi-label {
+    line-height: 1.3;
+    word-break: break-word;
+  }
+
+  /* Monospace values slightly larger for readability */
+  .activity-time,
+  .jt-id {
+    font-size: 12px;
+  }
+}
+
+/* ── MOBILE FORM ENHANCEMENTS ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Prevent iOS zoom on input focus */
+  .form-input,
+  input[type='text'],
+  input[type='number'],
+  input[type='date'],
+  input[type='email'],
+  input[type='tel'],
+  input[type='search'],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /* Stack form rows on mobile */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  /* Larger labels for mobile */
+  label {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  /* Full-width select dropdowns */
+  select.inline-status {
+    font-size: 12px;
+    min-height: 36px;
+  }
+}
+
+/* ── MOBILE SIDEBAR OVERLAY ENHANCEMENTS ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* User bar larger touch target */
+  .user-bar {
+    min-height: 48px;
+    padding: 14px 10px;
+  }
+
+  /* Active indicator adjusts for sidebar overlay */
+  .rail-item.active::before {
+    left: 0;
+  }
+
+  /* Close sidebar when a nav item is clicked on mobile */
+  .sidebar.open .rail-item {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* ── MOBILE BADGE ADJUSTMENTS ────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .badge {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+}
+
+/* ── LOGIN SCREEN MOBILE ──────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  #login-screen .theme-toggle {
+    top: 12px;
+    right: 12px;
+  }
+
+  /* Login card compact on mobile */
+  #login-screen div[style*='max-width: 400px'] {
+    max-width: 100% !important;
+    padding: 0 4px;
+  }
+
+  #login-screen div[style*='text-align: center'] {
+    margin-bottom: 24px !important;
+  }
+
+  #login-screen div[style*='width: 64px'] {
+    width: 52px !important;
+    height: 52px !important;
+    margin-bottom: 12px !important;
+  }
+
+  #login-screen h1 {
+    font-size: 20px !important;
+  }
+
+  #login-screen div[style*='border-radius: 16px'][style*='padding: 32px'] {
+    padding: 20px !important;
+    border-radius: 14px !important;
+  }
+
+  /* Login inputs touch-friendly */
+  #login-email,
+  #login-password {
+    font-size: 16px !important; /* Prevents iOS zoom */
+    padding: 14px !important;
+    min-height: 48px !important;
+  }
+
+  /* Sign in button touch-friendly */
+  #login-screen .btn-primary {
+    min-height: 48px;
+    padding: 14px !important;
+    font-size: 15px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  #login-screen div[style*='border-radius: 16px'][style*='padding: 32px'] {
+    padding: 16px !important;
+  }
+
+  #login-screen h1 {
+    font-size: 18px !important;
+  }
+}
+
+/* ── HOVER EFFECTS (touch device safety) ─────────────────────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glass-shadow-hover);
+  }
+}
+
+/* ── MOTION SAFETY ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   DASHBOARD MOBILE TUNING (2026-06-03)
+   Spec: docs/superpowers/specs/2026-06-03-mobile-friendly-dashboard-design.md
+   - Force single-column grids on phones (overrides style.css multi-col)
+   - min-width: 0 so children can shrink (fix currency overflow)
+   - Padding/font scale for tight cards
+   - Activity / Upcoming text line-clamp
+   - Chart collapsed-with-summary pattern
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Default (all viewports): hide chart-summary on desktop. */
+.chart-summary {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Force single column — wins specificity over style.css fixed grids. */
+  .kpi-grid,
+  .stat-row,
+  .finance-kpi-grid,
+  .dash-grid-3,
+  .dash-grid-2,
+  .chart-2col {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Allow widget cards to shrink below their content's intrinsic width. */
+  .dash-grid-3 > .widget-card,
+  .dash-grid-2 > .widget-card,
+  .chart-2col > .widget-card,
+  .kpi-grid > .widget-card,
+  .stat-row > .widget-card,
+  .finance-kpi-grid > .widget-card {
+    min-width: 0;
+  }
+
+  /* Tighter card padding, smaller titles, smaller value text. */
+  .widget-card {
+    padding: 14px;
+  }
+  .widget-title {
+    font-size: 14px;
+  }
+  .summary-value {
+    font-size: 22px;
+    word-break: break-word;
+  }
+
+  /* Sales/Purchase progress-legend currency overflow guard. */
+  .progress-legend-val,
+  .summary-value,
+  .summary-value.danger {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Activity / Upcoming: clamp long text to 2 lines, single-line meta. */
+  .activity-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+  }
+  .activity-time {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── Chart collapsed-with-summary ─────────────────────────────────────────── */
+  /* By default on mobile: hide canvas, show summary. */
+  .chart-widget .chart-wrap {
+    display: none;
+  }
+  .chart-widget .chart-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding: 14px 4px 4px;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+  }
+  .chart-summary-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .chart-summary-delta {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .chart-summary-delta.up {
+    color: #10b981;
+  }
+  .chart-summary-delta.down {
+    color: #ef4444;
+  }
+  .chart-summary-hint {
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+
+  /* When expanded: show canvas, hide hint. */
+  .chart-widget.expanded .chart-wrap {
+    display: block;
+  }
+  .chart-widget.expanded .chart-summary-hint {
+    display: none;
+  }
+  .chart-widget.expanded .chart-summary {
+    padding-bottom: 8px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   PULL-TO-REFRESH INDICATOR (mobile)
+   Created on demand by src/mobile-enhancements.js. Previously had no CSS at all,
+   so it rendered as a bare, mis-positioned div nudged by inline transforms.
+   This gives it a polished floating pill that slides down from the top, with the
+   refresh icon flipping when armed and spinning while reloading. The JS drives
+   the vertical position via an inline `transform` during the drag.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.ptr-indicator {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 10px);
+  left: 50%;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px 9px 13px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+  /* Hidden by default — JS shows it only during an active pull gesture. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-160%);
+}
+
+.ptr-indicator svg {
+  width: 18px;
+  height: 18px;
+  color: var(--primary);
+  transition: transform 0.2s var(--ease);
+}
+
+/* Pulled far enough to trigger — flip the arrow + tint the border. */
+.ptr-indicator.active {
+  border-color: var(--primary);
+}
+.ptr-indicator.active svg {
+  transform: rotate(180deg);
+}
+
+/* Releasing while armed — spin the icon while the reload happens. */
+.ptr-indicator.refreshing svg {
+  animation: ptrSpin 0.8s linear infinite;
+}
+@keyframes ptrSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── TWO-TIER NAV: restore the full labeled sidebar inside the mobile drawer ──── */
+/* On desktop the sidebar is a slim icon rail (labels hidden). When it becomes a
+   280px drawer at <=768px there is room for the wordmark, section captions, and
+   per-item labels again, so re-show them and switch items back to left-aligned
+   rows. */
+@media (max-width: 768px) {
+  .sidebar-brand {
+    display: inline;
+  }
+  .sidebar-logo {
+    justify-content: flex-start;
+    padding: 20px 20px 16px;
+  }
+  .nav-section-label {
+    display: block;
+  }
+  .rail-item {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    justify-content: flex-start;
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+  .rail-item .nav-label {
+    display: inline;
+  }
+  .sidebar .user-info {
+    display: block;
+  }
+  .user-bar {
+    justify-content: flex-start;
+    padding: 12px 12px 16px;
+    margin: 0 10px 10px;
+  }
+}

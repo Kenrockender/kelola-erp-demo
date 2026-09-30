@@ -1,0 +1,63 @@
+{
+  "name": "kelola-erp-demo",
+  "version": "3.3.0",
+  "description": "Kelola ERP (Demo) - Modern ERP Dashboard running on sample data",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:local": "vite --mode offline",
+    "build": "vite build",
+    "build:local": "vite build --mode offline",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\""
+  },
+  "dependencies": {
+    "@e965/xlsx": "^0.20.3",
+    "chart.js": "^4.5.0",
+    "firebase": "^12.12.0",
+    "idb": "^8.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^25.9.2",
+    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/ui": "^4.1.8",
+    "eslint": "^10.4.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.2.1",
+    "firebase-admin": "^14.0.0",
+    "globals": "^17.6.0",
+    "happy-dom": "^20.10.2",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.4.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.0",
+    "vite": "^8.0.16",
+    "vite-plugin-pwa": "^1.3.0",
+    "vitest": "^4.1.8",
+    "workbox-window": "^7.3.0"
+  },
+  "engines": {
+    "node": ">=20.19.0",
+    "npm": ">=10.0.0"
+  },
+  "keywords": [
+    "erp",
+    "demo",
+    "inventory-management",
+    "sales-management"
+  ],
+  "author": "Kelola ERP Demo",
+  "license": "PROPRIETARY",
+  "private": true
+}

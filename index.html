@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Kelola ERP (Demo) — Modern ERP for your whole business</title>
+  <meta name="description" content="Sales, purchasing, inventory, general ledger and reports in one fast app that works offline and keeps your data on your device. This is a public demo running on sample data.">
+  <meta name="theme-color" content="#0e1311">
+
+  <!-- Smart-skip: returning users (flag set on login) go straight to the app and
+       never see a flash of the marketing page. Runs before paint. Append ?stay=1
+       to always view this landing page. External file so CSP script-src stays 'self'. -->
+  <script src="/landing-skip.js"></script>
+
+  <!-- Social / OG -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kelola ERP (Demo) — Modern ERP for your whole business">
+  <meta property="og:description" content="Sales, purchasing, inventory, general ledger and reports in one fast app. This is a public demo running on sample data.">
+  <meta property="og:image" content="/logo-kelola-sq.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kelola ERP (Demo) — Modern ERP for your whole business">
+  <meta name="twitter:description" content="One fast app for sales, purchasing, inventory, ledger and reports. This is a public demo running on sample data.">
+  <meta name="twitter:image" content="/logo-kelola-sq.png">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Icons & PWA (manifest here too so the app is installable straight from
+       the landing page; start_url in the manifest still points at /app) -->
+  <link rel="icon" type="image/png" href="/logo-kelola-sq.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Fonts (same families as the app) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles/landing.css">
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="/">
+        <img src="/logo-kelola-sq.png" alt="Kelola">
+        <span>Kelola ERP</span>
+      </a>
+      <div class="nav-spacer"></div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="id">ID</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a class="btn btn-primary" href="/app.html" data-i18n="nav.open">Buka aplikasi</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ────────────────────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="wrap hero-copy">
+      <span class="badge"><span class="dot"></span><span data-i18n="hero.badge">Gratis · Privat · Offline</span></span>
+      <h1 class="hero-title" data-i18n="hero.title">ERP modern untuk <span class="accent">seluruh bisnis</span> Anda</h1>
+      <p class="hero-sub" data-i18n="hero.sub">Penjualan, pembelian, persediaan, buku besar, dan laporan — dalam satu aplikasi yang cepat, bekerja offline, dan menyimpan data Anda secara lokal.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="/app.html" data-i18n="hero.cta">Buka aplikasi</a>
+        <a class="btn btn-ghost btn-lg" href="#features" data-i18n="hero.cta2">Lihat fitur</a>
+      </div>
+      <p class="hero-note" data-i18n="hero.note">Ini adalah demo publik dengan data contoh. Tanpa pemasangan, login default sudah disiapkan untuk mulai mencoba.</p>
+    </div>
+
+    <!-- Scroll-zoom stage -->
+    <div class="hero-scroll">
+      <div class="hero-stage">
+        <div class="hero-mock" data-mock>
+          <div class="mock">
+            <div class="mock-bar">
+              <div class="dots"><i></i><i></i><i></i></div>
+              <span class="mock-title">Kelola ERP — Dashboard</span>
+            </div>
+            <div class="mock-body">
+              <aside class="mock-side">
+                <div class="s-item active">Dashboard</div>
+                <div class="s-item">Sales</div>
+                <div class="s-item">Purchases</div>
+                <div class="s-item">Inventory</div>
+                <div class="s-item">Ledger</div>
+                <div class="s-item">Reports</div>
+              </aside>
+              <div class="mock-main">
+                <div class="mock-stats">
+                  <div class="stat">
+                    <div class="label">Revenue</div>
+                    <div class="value mono">Rp 412M</div>
+                    <div class="delta">▲ 12.4%</div>
+                  </div>
+                  <div class="stat">
+                    <div class="label">Orders</div>
+                    <div class="value mono">1,284</div>
+                    <div class="delta">▲ 6.1%</div>
+                  </div>
+                  <div class="stat">
+                    <div class="label">Inventory</div>
+                    <div class="value mono">Rp 96M</div>
+                    <div class="delta">▲ 2.8%</div>
+                  </div>
+                </div>
+                <div class="mock-chart">
+                  <div class="ch-head"><b>Cash flow</b><span>Last 12 months</span></div>
+                  <svg viewBox="0 0 300 120" preserveAspectRatio="none" aria-hidden="true">
+                    <path class="chart-line" pathLength="1"
+                      d="M0,96 L27,90 L54,98 L82,74 L109,80 L136,58 L163,64 L190,42 L218,48 L245,28 L272,32 L300,12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Features ────────────────────────────────────────────────────────── -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" data-i18n="feat.eyebrow">Satu aplikasi, semua modul</div>
+        <h2 data-i18n="feat.title">Semua yang dibutuhkan untuk menjalankan operasional</h2>
+        <p data-i18n="feat.sub">Modul akuntansi dan operasional yang saling terhubung — bukan kumpulan alat terpisah.</p>
+      </div>
+      <div class="features">
+        <article class="card reveal">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div>
+          <h3 data-i18n="feat.1.t">Penjualan & Pembelian</h3>
+          <p data-i18n="feat.1.d">Penawaran, pesanan, faktur, dan surat jalan — alur dokumen yang saling terhubung dari kuotasi hingga pembayaran.</p>
+        </article>
+        <article class="card reveal">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+          <h3 data-i18n="feat.2.t">Persediaan & Gudang</h3>
+          <p data-i18n="feat.2.d">Stok multi-gudang, penyesuaian, dan retur dengan kartu stok yang selalu seimbang dengan buku besar.</p>
+        </article>
+        <article class="card reveal">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <h3 data-i18n="feat.3.t">Buku Besar & Keuangan</h3>
+          <p data-i18n="feat.3.d">Pembukuan double-entry, kas & bank, aset tetap, dan pajak — terbukukan otomatis dari setiap transaksi.</p>
+        </article>
+        <article class="card reveal">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <h3 data-i18n="feat.4.t">Laporan & Ekspor</h3>
+          <p data-i18n="feat.4.d">Laba rugi, neraca, dan arus kas. Ekspor ke Excel dan impor data kapan pun Anda butuhkan.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Trust strip ─────────────────────────────────────────────────────── -->
+  <section class="trust">
+    <div class="wrap">
+      <div class="section-head reveal" style="margin-bottom:0;padding-top:40px">
+        <h2 data-i18n="trust.title">Dibangun dengan prinsip yang benar</h2>
+        <p data-i18n="trust.sub">Tanpa janji kosong — hanya hal yang memang benar tentang aplikasi ini.</p>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-item reveal">
+          <div class="t-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <b data-i18n="trust.1.t">Local-first</b>
+          <span data-i18n="trust.1.d">Data tersimpan di perangkat Anda</span>
+        </div>
+        <div class="trust-item reveal">
+          <div class="t-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+          <b data-i18n="trust.2.t">Bekerja offline</b>
+          <span data-i18n="trust.2.d">PWA penuh, bisa dipasang</span>
+        </div>
+        <div class="trust-item reveal">
+          <div class="t-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <b data-i18n="trust.3.t">Gratis untuk mulai</b>
+          <span data-i18n="trust.3.d">Login default siap pakai</span>
+        </div>
+        <div class="trust-item reveal">
+          <div class="t-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <b data-i18n="trust.4.t">Dwibahasa</b>
+          <span data-i18n="trust.4.d">Antarmuka Indonesia & Inggris</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Closing CTA ─────────────────────────────────────────────────────── -->
+  <section class="section closing">
+    <div class="wrap">
+      <div class="closing-card reveal">
+        <h2 data-i18n="close.title">Siap merapikan pembukuan Anda?</h2>
+        <p data-i18n="close.sub">Buka aplikasi dan mulai dalam hitungan detik — tidak ada yang perlu dipasang.</p>
+        <a class="btn btn-primary btn-lg" href="/app.html" data-i18n="close.cta">Buka aplikasi</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
+  <footer class="wrap foot">
+    <div class="brand" style="font-size:15px"><img src="/logo-kelola-sq.png" alt="Kelola"><span>Kelola ERP</span></div>
+    <span data-i18n="foot.tag">Demo publik dengan data contoh. Bukan produk yang dipasarkan.</span>
+  </footer>
+
+  <script src="/landing.js"></script>
+</body>
+</html>
