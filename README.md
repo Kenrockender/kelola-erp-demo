@@ -1,79 +1,78 @@
-# Kelola ERP (Demo)
+# Kelola ERP — Public Demo
 
-A public demo of a local-first, lightweight ERP for small Indonesian businesses.
-This build runs entirely in your browser — sales, purchasing, inventory, and
-accounting on **sample data only**. There is no backend, no account creation,
-and nothing you enter here is uploaded anywhere.
+A local-first ERP demo for small Indonesian businesses, covering the day-to-day flow from sales and purchasing to inventory and accounting.
 
-This is a demo of a product built for a real client; the production version is
-not published, and this repo does not contain any of that client's data or
-configuration.
+**[Open the live demo](https://kelola-erp-demo.vercel.app/)**
 
-## What this demo is
+Built for a real-business context. This public repository contains only a safe, sample-data demo—no client data, production configuration, or production backend is included.
 
-- **Local-first**: the whole dataset lives in your browser's IndexedDB. Nothing
-  is sent to a server.
-- **Seeded on first load**: a fictitious dataset (customers, suppliers,
-  inventory, sales/purchase orders, invoices, and payments) is generated
-  automatically so every screen has something to show.
-- **Resettable**: Settings → Kelola Data Demo → **Reset Data Demo** wipes the
-  browser storage and reseeds fresh sample data.
-- **Fully functional within that scope**: create sales/purchase orders, receive
-  goods, post payments, and watch the general ledger, AR/AP aging, and stock
-  cards update accordingly.
+## What the demo shows
 
-## What's disabled in this build
+| Area | Workflow |
+|---|---|
+| Sales | Create orders, deliver goods, issue invoices, and record payments |
+| Purchasing | Create purchase orders, receive stock, and track supplier invoices |
+| Inventory | Review stock cards and see inventory update after transactions |
+| Finance | General ledger, accounts receivable/payable aging, and payment posting |
+| Auditability | Local audit log of actions completed in the demo |
+| Reporting | Charts and spreadsheet-oriented data workflows |
 
-The production version of this app supports an optional Firebase backend
-(real-time multi-device sync, hosted authentication, server-enforced RBAC,
-nightly backups, and a read-only integration API). None of that ships in this
-demo:
+The first visit seeds a fictitious dataset of customers, suppliers, products, orders, invoices, and payments, so each feature can be explored immediately.
 
-- No cloud sync — Firebase is not configured, so the app runs entirely on the
-  local-only code path.
-- No integration API (`/api/v1`) — that surface is server-side only and isn't
-  part of this build.
-- Two-factor authentication (TOTP) still works, but it's local-only — there's
-  no server to recover a lost device from, so don't enable it here with a
-  device you're not willing to lose.
-- The "Log Akses (Audit Trail)" server-side view is unavailable in local-only
-  mode; a local-only audit log of your session's own changes still works.
+## Local-first by design
 
-## Try it
+This demo runs entirely in the browser using IndexedDB:
 
-Sign in with the seeded local user (shown on the login screen), or check
-`.env.offline` for the default. Click around: add a sales order, mark it
-delivered, check the stock card, look at Laporan Umur Piutang (AR aging). When
-you're done, use **Reset Data Demo** in Settings to start over.
+- No account creation is required.
+- No data entered in the demo is uploaded to a server.
+- **Settings → Kelola Data Demo → Reset Data Demo** clears browser storage and reseeds the sample data.
 
-## Run it locally
+The production product has optional cloud capabilities, but they are deliberately excluded from this public build.
+
+## Technology
+
+| Area | Tools |
+|---|---|
+| App tooling | Vite, TypeScript |
+| Storage | IndexedDB via `idb` |
+| Reporting | Chart.js, XLSX |
+| Optional production services | Firebase, Firebase Admin |
+| PWA | Vite PWA / Workbox |
+| Quality | Vitest, ESLint, Prettier |
+
+## Run locally
 
 Requires Node.js 20.19+.
 
 ```bash
+git clone https://github.com/Kenrockender/kelola-erp-demo.git
+cd kelola-erp-demo
 npm install
-npm run dev:local   # forces the local-only (no-Firebase) build
+npm run dev:local
 ```
 
-Open the URL Vite prints (defaults to `http://localhost:8088`).
+Open the URL Vite prints (normally `http://localhost:8088`).
 
 ```bash
-npm run build:local # production build of the local-only demo
-npm run preview      # preview the built demo
+npm run build:local  # build the sample-data, local-only version
+npm run preview      # preview a production build
 ```
 
-## Testing
+## Quality checks
 
 ```bash
-npm test              # watch mode
-npm run test:run      # single run
-npm run type-check    # TypeScript check
+npm run type-check
+npm run lint
+npm run test:run
 ```
+
+## Scope and limitations
+
+- The demo uses **sample data only** and does not contain the production client’s data or configuration.
+- Cloud sync, hosted authentication, server-enforced roles, backups, and the production integration API are not part of this build.
+- Local two-factor authentication has no recovery flow in demo mode; do not enable it with a device you cannot afford to lose.
+- This repository is proprietary and published for demonstration only. It is not licensed for commercial reuse.
 
 ## Project structure
 
-See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md).
-
-## License
-
-Proprietary — demo purposes only. Not for redistribution or commercial reuse.
+See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for the codebase map.
